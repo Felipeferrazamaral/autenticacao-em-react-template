@@ -1,12 +1,27 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import CardPost from '../../components/CardPost/CardPost'
 import CriarPost from '../../components/CriarPost/CriarPost'
 import useRequestData from '../../hooks/useRequestData'
 import { FeedContainer } from './styled'
+import { irParaLogin } from '../../routes/coordinator'
+import { useNavigate } from 'react-router-dom'
+import { useProtectedPage } from '../../hooks/useProtectedPage'
 
 
 export default function Feed() {
-  const [posts] = useRequestData([], '/posts')
+
+  useProtectedPage()
+
+  const tokenLogado = localStorage.getItem('token')
+
+  const config = {
+    headers:{
+      Authorization: tokenLogado
+    }
+  }
+
+
+  const [posts] = useRequestData([], '/posts', config)
 
   return (
     <FeedContainer>
